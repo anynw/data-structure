@@ -44,6 +44,9 @@ public class MiGong {
 
 		map[3][1] = 1;
 		map[3][2] = 1;
+		// 回溯，设置一个密闭空间
+		map[1][2] = 1;
+		map[2][2] = 1;
 		System.out.println("设置挡板过后的地图:");
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 7; j++) {
@@ -64,6 +67,8 @@ public class MiGong {
 		}
 
 	}
+	
+	
 	// 1.map表示地图
 	// 2.i，j表示从哪里开始走
 	// 3.约定规则：走的方向-》下 右 上 左
