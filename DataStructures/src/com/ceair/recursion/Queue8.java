@@ -12,10 +12,14 @@ public class Queue8 {
 	// 存放皇后的下标【位置】
 	int[] arr = new int[max];
 	static int count = 0;
+	// 判断冲突次数
+	static int judgeNum = 0;
 	public static void main(String[] args) {
 		Queue8 queue8 = new Queue8();
 		queue8.check(0);
 		System.out.printf("八皇后问题一共有%d种放置方法",count);
+		System.out.println();
+		System.out.printf("八皇后问题一共判断了冲突%d次",judgeNum);
 	}
 
 	// 放置第n个皇后
@@ -38,6 +42,7 @@ public class Queue8 {
 
 	// 判断放置第n个皇后时，其位置与前面已经放置好的皇后位置是否符合要求（是否冲突）：不能在同一列，同一斜线；
 	private boolean judge(int n) {
+		judgeNum++;
 		for (int i = 0; i < n; i++) {
 			// arr[i] == arr[n] 表示在同一列
 			// Math.abs(n-i) == Math.abs(arr[n]-arr[i] 表示在同一斜线
