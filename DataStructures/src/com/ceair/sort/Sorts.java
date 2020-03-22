@@ -3,10 +3,10 @@ package com.ceair.sort;
 import java.util.Arrays;
 
 /**
- * 1.排序默认从小到大
- * 2.模拟10万数据测试排序大概耗时
- * 3.冒泡排序：15s
- * 4.选择排序：2s
+ * 1.排序默认从小到大 
+ * 2.模拟10万数据测试排序大概耗时 
+ * 3.冒泡排序：15s 
+ * 4.选择排序：2s 
  * 5.插入排序：4s
  * 
  * @author huaping
@@ -15,7 +15,7 @@ import java.util.Arrays;
 public class Sorts {
 
 	public static int DEFAULT_SIZE = 100000;
-	
+
 	public static void main(String[] args) {
 		int[] arr = { 1, 2, 44, -2, 0, 5 };
 		System.out.println("原始数组：" + Arrays.toString(arr));
@@ -93,14 +93,18 @@ public class Sorts {
 	 * @param arr
 	 */
 	public static void insertSort(int[] arr) {
+		int insertVal = 0;
+		int insertIndex = 0;
 		for (int i = 1; i < arr.length; i++) {
-			int insertVal = arr[i];
-			int insertIndex = i - 1;
+			insertVal = arr[i];
+			insertIndex = i - 1;
 			while (insertIndex >= 0 && insertVal < arr[insertIndex]) {
 				arr[insertIndex + 1] = arr[insertIndex];
 				insertIndex--;
 			}
-			arr[insertIndex + 1] = insertVal;
+			if (insertIndex + 1 != i) {
+				arr[insertIndex + 1] = insertVal;
+			}
 		}
 	}
 
