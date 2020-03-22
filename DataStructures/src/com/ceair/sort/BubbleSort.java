@@ -3,7 +3,7 @@ package com.ceair.sort;
 import java.util.Arrays;
 
 /**
- * 详细说明冒泡排序，时间复杂度O(n∧2)
+ * 详细说明冒泡排序，时间复杂度O(n²)
  * 
  * @author huaping
  * @time 2020-03-22 5:55:49 PM
