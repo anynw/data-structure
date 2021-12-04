@@ -14,7 +14,7 @@ public class StackTest {
 		stack.add("a");
 		stack.add("b");
 		stack.add("c");
-		stack.add("d");
+		//stack.add("d");
 
 		String peek = stack.peek();
 		System.out.println(peek);
