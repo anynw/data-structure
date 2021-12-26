@@ -1,48 +1,64 @@
 package com.ceair.huffmancode;
 
+import java.io.*;
 import java.util.*;
 import java.util.zip.ZipFile;
 
 /**
  * 哈夫曼编码
+ * 解压思路：
+ * 1.huffmanCodeBytes = [-88, -65, -56, -65, -56, -65, -55, 77, -57, 6, -24, -14, -117, -4, -60, -90, 28]
+ * 重新转成 哈夫曼编码对应的二进制字符串 "1010100010111111110010001011111111001000101111111100100101001101110001110000011011101000111100101000101111111100110001001010011011100"
+ * 2.将哈夫曼编码对应的二进制字符串转成 content 字符串内容
  *
  * @author wuhp
  * @date 2021/12/26
  */
 public class HuffmanCode {
     public static void main(String[] args) {
-        // String content = "I love you";
-        String content = "i like like like java do you like a java";
-        byte[] bytes = content.getBytes();
-        // System.out.println(bytes.length); // 40
-        //
-        // List<Node> nodes = getNodes(bytes);
-        // System.out.println(nodes);
-        //
-        // Node root = createHuffmanTree(nodes);
-        // System.out.println("哈夫曼树root节点：" + root);
-        // System.out.println("前序遍历：");
-        // root.preOrder();
-        //
-        // Map<Byte, String> codes = getCodes(root);
-        // System.out.println("生成的哈夫曼编码表：" + codes);
-        //
-        // System.out.println("------zip-------");
-        // byte[] zipBytes = zip(bytes, codes);
-        // System.out.println(Arrays.toString(zipBytes));
-        // System.out.println(zipBytes.length); // 17
-        // System.out.println("压缩率 = " + (double) (bytes.length - zipBytes.length) / bytes.length); //57.5%
+        /**
+         // String content = "I love you";
+         String content = "i like like like java do you like a java";
+         byte[] bytes = content.getBytes();
+         // System.out.println(bytes.length); // 40
+         //
+         // List<Node> nodes = getNodes(bytes);
+         // System.out.println(nodes);
+         //
+         // Node root = createHuffmanTree(nodes);
+         // System.out.println("哈夫曼树root节点：" + root);
+         // System.out.println("前序遍历：");
+         // root.preOrder();
+         //
+         // Map<Byte, String> codes = getCodes(root);
+         // System.out.println("生成的哈夫曼编码表：" + codes);
+         //
+         // System.out.println("------zip-------");
+         // byte[] zipBytes = zip(bytes, codes);
+         // System.out.println(Arrays.toString(zipBytes));
+         // System.out.println(zipBytes.length); // 17
+         // System.out.println("压缩率 = " + (double) (bytes.length - zipBytes.length) / bytes.length); //57.5%
 
-        byte[] huffmanCodeBytes = huffmanZip(bytes);
-        System.out.println(Arrays.toString(huffmanCodeBytes));
+         byte[] huffmanCodeBytes = huffmanZip(bytes);
+         System.out.println(Arrays.toString(huffmanCodeBytes));
 
-        System.out.println(0b100000000);// 256
+         System.out.println(0b100000000);// 256
 
-        System.out.println(Arrays.toString(bytes));
+         System.out.println(Arrays.toString(bytes));
 
-        System.out.println("解码：");
-        byte[] sourceBytes = decode(huffmanCodes, huffmanCodeBytes);
-        System.out.println(new String(sourceBytes));// iaikal kal kajoe aoeleijkuljoe
+         System.out.println("解码：");
+         byte[] sourceBytes = decode(huffmanCodes, huffmanCodeBytes);
+         System.out.println(new String(sourceBytes));// iaikal kal kajoe aoeleijkuljoe
+
+         */
+        // 测试压缩文件
+        // String srcFile = "/Users/wuhp/Documents/images/src.png";
+        // String dstFile = "/Users/wuhp/Documents/images/dst.zip";
+        // zipFile(srcFile, dstFile);
+
+        String zipFile = "/Users/wuhp/Documents/images/dst.zip";
+        String dstFile = "/Users/wuhp/Documents/images/src2.png";
+        unZipFile(zipFile,dstFile);
 
 
     }
@@ -52,10 +68,92 @@ public class HuffmanCode {
     // 哈夫曼表存放形式
     static Map<Byte, String> huffmanCodes = new HashMap<Byte, String>();
 
-    // 解压思路：
-    // 1.huffmanCodeBytes = [-88, -65, -56, -65, -56, -65, -55, 77, -57, 6, -24, -14, -117, -4, -60, -90, 28]
-    // 重新转成 哈夫曼编码对应的二进制字符串 "1010100010111111110010001011111111001000101111111100100101001101110001110000011011101000111100101000101111111100110001001010011011100"
-    // 2.将哈夫曼编码对应的二进制字符串转成 content 字符串内容
+    /**
+     * 压缩文件
+     *
+     * @param srcFile 源文件
+     * @param dstFile 目标文件
+     */
+    public static void zipFile(String srcFile, String dstFile) {
+        // 定义输入流
+        FileInputStream is = null;
+        // 定义输出流
+        FileOutputStream os = null;
+        // 定义对象流
+        ObjectOutputStream oos = null;
+        try {
+            // 创建文件的输入流
+            is = new FileInputStream(srcFile);
+            // 创建一个与源文件大小一样的byte[]
+            byte[] b = new byte[is.available()];
+            // 读取文件
+            is.read(b);
+            // 对源文件进行压缩，返回哈夫曼字节数组
+            byte[] huffmanBytes = huffmanZip(b);
+
+            // 创建文件的输出流
+            os = new FileOutputStream(dstFile);
+            // 创建一个与文件输出流关联的ObjectOutputStream
+            oos = new ObjectOutputStream(os);
+            // 把哈夫曼编码后的字节数组写入压缩嗯见
+            oos.writeObject(huffmanBytes);
+
+
+            // 把哈夫曼编码写入压缩文件，为了以后恢复源文件使用
+            oos.writeObject(huffmanCodes);
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                oos.close();
+                os.close();
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 解压文件
+     *
+     * @param zipFile 待解压的文件
+     * @param dstFile 解压文件的文件路径
+     */
+    public static void unZipFile(String zipFile, String dstFile) {
+        InputStream is = null;
+        OutputStream os = null;
+        ObjectInputStream ois = null;
+        try {
+            File file;
+            is = new FileInputStream(zipFile);
+            ois = new ObjectInputStream(is);
+            // 读取bytes[]数组
+            byte[] huffmanBytes = (byte[]) ois.readObject();
+            // 读取哈夫曼编码表
+            Map<Byte, String> huffmanCodes = (Map<Byte, String>) ois.readObject();
+            // 解码
+            byte[] bytes = decode(huffmanCodes, huffmanBytes);
+            os = new FileOutputStream(dstFile);
+            os.write(bytes);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                ois.close();
+                os.close();
+                is.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
 
     /**
      * 解码
@@ -77,7 +175,7 @@ public class HuffmanCode {
         for (Map.Entry<Byte, String> entry : huffmanCodes.entrySet()) {
             map.put(entry.getValue(), entry.getKey());
         }
-        System.out.println("反向map = " + map);
+        // System.out.println("反向map = " + map);
 
         List<Byte> list = new ArrayList<>();
         // 根据count移动，所以for循环不需要i++
@@ -140,7 +238,12 @@ public class HuffmanCode {
         return huffmanCodeBytes;
     }
 
-    // 哈夫曼编码生成方法的重载
+    /**
+     * 哈夫曼编码生成方法的重载
+     *
+     * @param node
+     * @return
+     */
     public static Map<Byte, String> getCodes(Node node) {
         if (node == null) {
             return null;
@@ -162,7 +265,7 @@ public class HuffmanCode {
         for (byte b : bytes) {
             stringBuilder.append(huffmanCodes.get(b));
         }
-        System.out.println(stringBuilder);//1010100010111111110010001011111111001000101111111100100101001101110001110000011011101000111100101000101111111100110001001010011011100
+        // System.out.println(stringBuilder);//1010100010111111110010001011111111001000101111111100100101001101110001110000011011101000111100101000101111111100110001001010011011100
         // 将 stringBuilder 转成byte[]
         int len = (stringBuilder.length() + 7) / 8;
         // 创建存在压缩后的byte数组
