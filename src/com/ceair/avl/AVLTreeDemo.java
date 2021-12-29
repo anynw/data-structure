@@ -11,8 +11,8 @@ public class AVLTreeDemo {
         int[] arr = {4, 3, 6, 5, 7, 8};
         AVLTree avlTree = new AVLTree();
 
-        for (int i = 0; i < arr.length; i++) {
-            avlTree.add(new Node(arr[i]));
+        for (int i : arr){
+            avlTree.add(new Node(i));
         }
         System.out.println("中序遍历平衡二叉树");
         avlTree.midOrder();
