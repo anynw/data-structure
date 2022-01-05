@@ -12,9 +12,65 @@ import java.util.ArrayList;
 public class HorseChessboard {
     private static int X;//列
     private static int Y;//行
+    private static boolean visited[];//标记是否被访问过
+    private static boolean finished;//标记所有被访问
 
     public static void main(String[] args) {
+        X = 8;
+        Y = 8;
+        int row = 1;
+        int column = 1;
+        int[][] chessboard = new int[X][Y];
+        visited = new boolean[X * Y];
+        long start = System.currentTimeMillis();
+        traversalChessboard(chessboard, row - 1, column - 1, 1);
+        long end = System.currentTimeMillis();
+        System.out.println("耗时："+(end-start)/1000 + "s");
 
+        for (int[] rows:chessboard){
+            for (int step : rows){
+                System.out.print(step + "\t");
+            }
+            System.out.println();
+        }
+        /**
+         * 耗时：14s
+         * 1	8	11	16	3	18	13	64
+         * 10	27	2	7	12	15	4	19
+         * 53	24	9	28	17	6	63	14
+         * 26	39	52	23	62	29	20	5
+         * 43	54	25	38	51	22	33	30
+         * 40	57	42	61	32	35	48	21
+         * 55	44	59	50	37	46	31	34
+         * 58	41	56	45	60	49	36	47
+         */
+    }
+
+    /**
+     * 骑士周游
+     *
+     * @param chessboard 棋盘
+     * @param row
+     * @param column
+     * @param step       第几步，从1开始
+     */
+    public static void traversalChessboard(int[][] chessboard, int row, int column, int step) {
+        chessboard[row][column] = step;
+        visited[row * X + column] = true;
+        ArrayList<Point> ps = next(new Point(column, row));
+        while (!ps.isEmpty()) {
+            Point p = ps.remove(0);
+            if (!visited[p.y * X + p.x]) {
+                traversalChessboard(chessboard, p.y, p.x, step + 1);
+            }
+        }
+        // 判断是否完成
+        if (step < X * Y && !finished) {
+            chessboard[row][column] = 0;
+            visited[row * X + column] = false;
+        } else {
+            finished = true;
+        }
     }
 
     /**
