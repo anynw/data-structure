@@ -3,6 +3,7 @@ package com.ceair.floyd;
 import java.util.Arrays;
 
 /**
+ * 弗洛伊德算法，所有点直接之间的最短路径，时间复杂度比较高
  * @author wuhp
  * @date 2022/1/5
  */
