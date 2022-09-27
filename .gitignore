@@ -24,3 +24,5 @@ target/
 #mac
 .DS_Store
 .test
+*.idea
+*.iml
