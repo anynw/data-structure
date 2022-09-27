@@ -23,3 +23,4 @@ target/
 *.rar
 #mac
 .DS_Store
+.test
