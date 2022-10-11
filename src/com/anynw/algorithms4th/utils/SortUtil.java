@@ -6,22 +6,22 @@ import edu.princeton.cs.algs4.StdOut;
  * @author wuhp
  * @date 2022/10/10
  */
-public class Example {
-    public static void sort(Comparable[] a) {
+public class SortUtil {
+    public static void sort(int[] a) {
         // 各种排序实现
     }
 
-    private static boolean less(Comparable v, Comparable w) {
-        return v.compareTo(w) < 0;
+    public static boolean less(int v, int w) {
+        return v < w;
     }
 
-    private static void exch(Comparable[] a, int i, int j) {
-        Comparable temp = a[i];
+    public static void exch(int[] a, int i, int j) {
+        int temp = a[i];
         a[i] = a[j];
         a[j] = temp;
     }
 
-    private static void show(Comparable[] a) {
+    public static void show(int[] a) {
         // 单行打印数组
         for (int i = 0; i < a.length; i++) {
             StdOut.print(a[i] + " ");
@@ -29,7 +29,7 @@ public class Example {
         StdOut.println();
     }
 
-    private static boolean isSorted(Comparable[] a) {
+    public static boolean isSorted(int[] a) {
         for (int i = 0; i < a.length; i++) {
             if (less(a[i], a[i - 1])) {
                 return false;
